@@ -1,0 +1,3 @@
+Version 0.1.0 released 9-18-2012
+
+* Initial Release
