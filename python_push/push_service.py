@@ -15,6 +15,12 @@ class PushService(object):
 
     @abstractmethod
     def register(self, token, callback):
+        """ Register a device token validating it and
+            generates a Device object.
+
+            token: The device registration id.
+            callback: the function to be executed when the registration completes
+        """
         pass
 
     @abstractmethod

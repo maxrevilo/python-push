@@ -3,5 +3,6 @@ class Device:
     type = None
     token = None
 
-    def __init__(self):
-        pass
+    def __init__(self, type, token):
+        self.type = type
+        self.token = token

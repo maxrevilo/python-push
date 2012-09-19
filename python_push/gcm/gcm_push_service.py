@@ -1,9 +1,11 @@
 from python_push.push_service import PushService
+from python_push.device import Device
 
 
 class GCMPushService(PushService):
     """GCM Push Service implementation"""
     settings = None
+    type = "ANDROID"
 
     def __init__(self, settings):
         """ Initializes de GCM Push Service with the specified setings.
@@ -30,7 +32,7 @@ class GCMPushService(PushService):
             token: The device registration id.
             callback: the function to be executed when the registration completes
         """
-        pass
+        callback(Device(GCMPushService.type, token))
 
     def send(self, message, device, callback):
         pass
