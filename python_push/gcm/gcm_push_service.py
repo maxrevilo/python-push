@@ -1,5 +1,6 @@
 from python_push.push_service import PushService
 from python_push.device import Device
+from python_push.send_status import SendStatus
 
 
 class GCMPushService(PushService):
@@ -8,7 +9,7 @@ class GCMPushService(PushService):
     type = "ANDROID"
 
     def __init__(self, settings):
-        """ Initializes de GCM Push Service with the specified setings.
+        """ Initializes the GCM Push Service with the specified settings.
             settings: {
                 api_id: Google Server API Key.
 
@@ -34,5 +35,12 @@ class GCMPushService(PushService):
         """
         callback(Device(GCMPushService.type, token))
 
-    def send(self, message, device, callback):
-        pass
+    def send(self, message, device_list, callback):
+        """ Sends a message to a GCM device list, when the GCM server response executes
+            the callback with the GCM response.
+
+            message: The Message to be sent to the device list.
+            device_list: A DeviceList with at least 1 GCM Device.
+            callback: the function to be executed when the GCM response is received.
+        """
+        callback(SendStatus(code = 200, success = 1, failure = 0))

@@ -4,3 +4,6 @@ class DeviceList:
 
     def __init__(self):
         pass
+
+    def add(self, device):
+        self._devices.append(device)
