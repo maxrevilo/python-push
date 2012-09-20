@@ -8,10 +8,7 @@ class Message:
         pass
 
     def set_option(self, key, value):
-        pass
+        self.options[key] = value
 
     def remove_option(self, key):
-        pass
-
-    def get_options(self):
-        return self.options
+        raise NotImplemented
