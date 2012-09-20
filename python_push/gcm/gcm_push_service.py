@@ -24,7 +24,7 @@ class GCMPushService(PushService):
         if 'api_id' in settings and len(settings['api_id']) > 0:
             self.settings = settings
         else:
-            raise ValueError
+            raise ValueError('api_id must well be defined on settings')
 
     def register(self, token, callback):
         """ Register a GCM device token validating it and
@@ -43,4 +43,6 @@ class GCMPushService(PushService):
             device_list: A DeviceList with at least 1 GCM Device.
             callback: the function to be executed when the GCM response is received.
         """
-        callback(SendStatus(code = 200, success = 1, failure = 0))
+        if(device_list.length() < 1):
+            raise ValueError('DeviceList must contains at least 1 Device')
+        callback(SendStatus(code=200, success=1, failure=0))
