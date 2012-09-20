@@ -1,6 +1,8 @@
 from python_push.push_service import PushService
 from python_push.device import Device
 from python_push.send_status import SendStatus
+import grequests
+import json
 
 
 class GCMPushService(PushService):
@@ -45,4 +47,47 @@ class GCMPushService(PushService):
         """
         if(device_list.length() < 1):
             raise ValueError('DeviceList must contains at least 1 Device')
-        callback(SendStatus(code=200, success=1, failure=0))
+
+        # UNTESTED
+        registration_ids = map(
+            lambda device: device.token,
+            filter(
+                lambda device:
+                    device.type == GCMPushService.type,
+                device_list
+            )
+        )
+
+        # UNTESTED
+        body = {'registration_id': registration_ids}
+        # UNTESTED
+        if(message.payload != None):
+            body['data'] = message.payload
+        # UNTESTED
+        body_str = json.dumps(body)
+        # UNTESTED
+        headers = {
+            'Content-Type': 'application/json',
+            'Content-length': str(len(body_str.decode("utf-8"))),
+            'Authorization': 'key=%s' % self.settings['api_id']
+        }
+
+        def response_cb(res):
+            code = res.status_code
+            assert isinstance(code, int)
+            callback(
+                SendStatus(
+                    code=code,
+                    success=res.json['success'] if code == 200 else None,
+                    failure=res.json['failure'] if code == 200 else None
+                )
+            )
+
+        # UNTESTED
+        req = grequests.post(
+            'http://android.googleapis.com/gcm/send',
+            data=body_str,
+            headers=headers,
+            hooks={'response': response_cb}
+        )
+        req.send()
