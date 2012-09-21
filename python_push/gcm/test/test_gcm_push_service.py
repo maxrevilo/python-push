@@ -2,6 +2,7 @@ import unittest
 from ..gcm_push_service import GCMPushService
 from python_push.send_status import SendStatus
 from python_push.message import Message
+from python_push.device import Device
 #from time import sleep
 
 
@@ -28,8 +29,8 @@ class TestGCMPushService(unittest.TestCase):
             global callback_called
             callback_called = True
             #self.assertIsInstance(device, Device)
-            self.assertTrue(device['type'] == GCMPushService.type)
-            self.assertTrue(device['token'] == TOKEN)
+            self.assertTrue(device.type == GCMPushService.type)
+            self.assertTrue(device.token == TOKEN)
 
         gcm_srv.register(TOKEN, callback_test)
 
@@ -94,7 +95,7 @@ class TestGCMPushService(unittest.TestCase):
             msg, device_list, send_callback
         )
 
-        device_list.append({'token': None, 'type': None})
+        device_list.append(Device(token=None, type=None))
         # This should run without problems
         gcm_srv.send(msg, device_list, send_callback)
         self.assertTrue(send_callback_called)

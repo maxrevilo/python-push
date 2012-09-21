@@ -1,5 +1,6 @@
 from python_push.push_service import PushService
 from python_push.send_status import SendStatus
+from python_push.device import Device
 import grequests
 import json
 
@@ -35,7 +36,7 @@ class GCMPushService(PushService):
             token: The device registration id.
             callback: the function to be executed when the registration completes
         """
-        callback({'type': GCMPushService.type, 'token': token})
+        callback(Device(type=GCMPushService.type, token=token))
 
     def send(self, message, device_list, callback):
         """ Sends a message to a GCM device list, when the GCM server response executes
@@ -50,10 +51,10 @@ class GCMPushService(PushService):
 
         # UNTESTED
         registration_ids = map(
-            lambda device: device['token'],
+            lambda device: device.token,
             filter(
                 lambda device:
-                    device['type'] == GCMPushService.type,
+                    device.type == GCMPushService.type,
                 device_list
             )
         )
