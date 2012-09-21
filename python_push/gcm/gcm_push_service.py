@@ -1,5 +1,4 @@
 from python_push.push_service import PushService
-from python_push.device import Device
 from python_push.send_status import SendStatus
 import grequests
 import json
@@ -8,7 +7,8 @@ import json
 class GCMPushService(PushService):
     """GCM Push Service implementation"""
     settings = None
-    type = "ANDROID"
+    # Google Android
+    type = 'GA'
 
     def __init__(self, settings):
         """ Initializes the GCM Push Service with the specified settings.
@@ -35,7 +35,7 @@ class GCMPushService(PushService):
             token: The device registration id.
             callback: the function to be executed when the registration completes
         """
-        callback(Device(GCMPushService.type, token))
+        callback({'type': GCMPushService.type, 'token': token})
 
     def send(self, message, device_list, callback):
         """ Sends a message to a GCM device list, when the GCM server response executes
@@ -45,15 +45,15 @@ class GCMPushService(PushService):
             device_list: A DeviceList with at least 1 GCM Device.
             callback: the function to be executed when the GCM response is received.
         """
-        if(device_list.length() < 1):
+        if(len(device_list) < 1):
             raise ValueError('DeviceList must contains at least 1 Device')
 
         # UNTESTED
         registration_ids = map(
-            lambda device: device.token,
+            lambda device: device['token'],
             filter(
                 lambda device:
-                    device.type == GCMPushService.type,
+                    device['type'] == GCMPushService.type,
                 device_list
             )
         )
