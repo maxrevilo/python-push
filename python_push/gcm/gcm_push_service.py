@@ -8,7 +8,7 @@ import json
 class GCMPushService(PushService):
     """GCM Push Service implementation"""
     settings = None
-    type = "ANDROID"
+    type = "GA"
 
     def __init__(self, settings):
         """ Initializes the GCM Push Service with the specified settings.
