@@ -59,7 +59,7 @@ class GCMPushService(PushService):
         )
 
         # UNTESTED
-        body = {'registration_id': registration_ids}
+        body = {'registration_ids': registration_ids}
         # UNTESTED
         if(message.payload != None):
             body['data'] = message.payload
@@ -79,7 +79,8 @@ class GCMPushService(PushService):
                 SendStatus(
                     code=code,
                     success=res.json['success'] if code == 200 else None,
-                    failure=res.json['failure'] if code == 200 else None
+                    failure=res.json['failure'] if code == 200 else None,
+                    raw=res.text
                 )
             )
 
