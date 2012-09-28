@@ -1,9 +1,8 @@
 import unittest
 from ..gcm_push_service import GCMPushService
-from python_push.device import Device
-from python_push.device_list import DeviceList
 from python_push.send_status import SendStatus
 from python_push.message import Message
+from python_push.device import Device
 #from time import sleep
 
 
@@ -29,7 +28,7 @@ class TestGCMPushService(unittest.TestCase):
         def callback_test(device):
             global callback_called
             callback_called = True
-            self.assertIsInstance(device, Device)
+            #self.assertIsInstance(device, Device)
             self.assertTrue(device.type == GCMPushService.type)
             self.assertTrue(device.token == TOKEN)
 
@@ -54,8 +53,7 @@ class TestGCMPushService(unittest.TestCase):
             global send_callback_called
             send_callback_called = False
 
-            device_list = DeviceList()
-            device_list.add(device)
+            device_list = [device]
 
             def send_callback(send_status):
                 self.assertIsInstance(send_status, SendStatus)
@@ -63,7 +61,7 @@ class TestGCMPushService(unittest.TestCase):
                 if(send_status.code == 200):
                     self.assertTrue(
                         send_status.success ==
-                            device_list.length() - send_status.failure
+                            len(device_list) - send_status.failure
                     )
                 #self.assertTrue(send_status.canonical_ids == 0)
 
@@ -83,8 +81,7 @@ class TestGCMPushService(unittest.TestCase):
         msg = Message()
         gcm_srv = GCMPushService({'api_id': API_ID})
 
-        device = Device(None, None)
-        device_list = DeviceList()
+        device_list = []
 
         global send_callback_called
         send_callback_called = False
@@ -98,7 +95,7 @@ class TestGCMPushService(unittest.TestCase):
             msg, device_list, send_callback
         )
 
-        device_list.add(device)
+        device_list.append(Device(token=None, type=None))
         # This should run without problems
         gcm_srv.send(msg, device_list, send_callback)
         self.assertTrue(send_callback_called)
