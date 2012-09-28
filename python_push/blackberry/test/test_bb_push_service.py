@@ -1,9 +1,8 @@
 import unittest
 from ..bb_push_service import BBPushService
-from ..status_description import status_description
-from python_push.device import Device
 from python_push.send_status import SendStatus
 from python_push.message import Message
+from python_push.device import Device
 #from time import sleep
 
 

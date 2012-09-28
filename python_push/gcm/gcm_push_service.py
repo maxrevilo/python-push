@@ -29,15 +29,6 @@ class GCMPushService(PushService):
         else:
             raise ValueError('api_id must well be defined on settings')
 
-    def register(self, token, callback):
-        """ Register a GCM device token validating it and
-            generates a Device object.
-
-            token: The device registration id.
-            callback: the function to be executed when the registration completes
-        """
-        callback(Device(type=GCMPushService.type, token=token))
-
     def send(self, message, device_list, callback):
         """ Sends a message to a GCM device list, when the GCM server response executes
             the callback with the GCM response.

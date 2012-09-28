@@ -19,63 +19,32 @@ class TestGCMPushService(unittest.TestCase):
         # This should run without problems
         GCMPushService({'api_id': API_ID})
 
-    def test_register_generates_device(self):
-        gcm_srv = GCMPushService({'api_id': API_ID})
-
-        global callback_called
-        callback_called = False
-
-        def callback_test(device):
-            global callback_called
-            callback_called = True
-            #self.assertIsInstance(device, Device)
-            self.assertTrue(device.type == GCMPushService.type)
-            self.assertTrue(device.token == TOKEN)
-
-        gcm_srv.register(TOKEN, callback_test)
-
-        #This will be necesary if gcm_srv.register connect to GCM.
-        #if not callback_called:
-        #    sleep(.001)
-
-        self.assertTrue(callback_called)
-
     def test_send_collapsible_message(self):
         msg = Message()
         msg.set_option('collapse_key', 'test')
 
         gcm_srv = GCMPushService({'api_id': API_ID})
 
-        global register_callback_called
-        register_callback_called = False
+        global send_callback_called
+        send_callback_called = False
 
-        def register_callback(device):
+        device_list = [Device(GCMPushService.type, TOKEN)]
+
+        def send_callback(send_status):
+            self.assertIsInstance(send_status, SendStatus)
+            self.assertTrue(send_status.code in [200, 503])
+            if(send_status.code == 200):
+                self.assertTrue(
+                    send_status.success ==
+                        len(device_list) - send_status.failure
+                )
+            #self.assertTrue(send_status.canonical_ids == 0)
+
             global send_callback_called
-            send_callback_called = False
+            send_callback_called = True
 
-            device_list = [device]
-
-            def send_callback(send_status):
-                self.assertIsInstance(send_status, SendStatus)
-                self.assertTrue(send_status.code in [200, 400, 401, 500, 503])
-                if(send_status.code == 200):
-                    self.assertTrue(
-                        send_status.success ==
-                            len(device_list) - send_status.failure
-                    )
-                #self.assertTrue(send_status.canonical_ids == 0)
-
-                global send_callback_called
-                send_callback_called = True
-
-            gcm_srv.send(msg, device_list, send_callback)
-            self.assertTrue(send_callback_called)
-
-            global register_callback_called
-            register_callback_called = True
-
-        gcm_srv.register(TOKEN, register_callback)
-        self.assertTrue(register_callback_called)
+        gcm_srv.send(msg, device_list, send_callback)
+        self.assertTrue(send_callback_called)
 
     def test_send_message_device_list_have_at_least_one_device(self):
         msg = Message()
