@@ -46,7 +46,7 @@ class GCMPushService(PushService):
             callback: the function to be executed when the GCM response is received.
         """
         if(device_list.length() < 1):
-            raise ValueError('DeviceList must contains at least 1 Device')
+            raise ValueError('device_list must contains at least 1 Device')
 
         # UNTESTED
         registration_ids = map(
@@ -86,7 +86,7 @@ class GCMPushService(PushService):
 
         # UNTESTED
         req = grequests.post(
-            'http://android.googleapis.com/gcm/send',
+            'https://android.googleapis.com/gcm/send',
             data=body_str,
             headers=headers,
             hooks={'response': response_cb}
