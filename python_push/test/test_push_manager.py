@@ -47,8 +47,6 @@ class TestMessage(unittest.TestCase):
         self.assertTrue(pm.get_service('Must NOT exist') == None)
 
     def test_push_manager_send(self):
-        pass
-        """
         pm = PushManager([
             GCMPushService(GCM_OPS),
             BBPushService(BLACKBERRY_OPS)
@@ -74,4 +72,3 @@ class TestMessage(unittest.TestCase):
             status_dict[GCMPushService.type].code in (200, 503),
             '\nGCM Status Code %i:\n' % (status_dict[GCMPushService.type].code)
         )
-        """
