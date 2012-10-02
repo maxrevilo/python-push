@@ -32,7 +32,7 @@ class TestGCMPushService(unittest.TestCase):
 
         def send_callback(send_status):
             self.assertIsInstance(send_status, SendStatus)
-            self.assertTrue(send_status.code in [200, 503])
+            self.assertTrue(send_status.code in (200, 503))
             if(send_status.code == 200):
                 self.assertTrue(
                     send_status.success ==
