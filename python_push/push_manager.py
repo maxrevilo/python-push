@@ -32,9 +32,12 @@ class PushManager:
         python_requests = []
 
         for push_service in self._services:
-            pr = push_service.send_request(message, device_list)
-            push_requests.append(pr)
-            python_requests.append(pr._request)
+            try:
+                pr = push_service.send_request(message, device_list)
+                push_requests.append(pr)
+                python_requests.append(pr._request)
+            except ValueError:
+                pass
 
         grequests.map(python_requests)
 

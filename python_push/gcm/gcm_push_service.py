@@ -35,9 +35,6 @@ class GCMPushService(PushService):
             message: The Message to be sent to the device list.
             device_list: A DeviceList with at least 1 GCM Device.
         """
-        if(len(device_list) < 1):
-            raise ValueError('device_list must contains at least 1 Device')
-
         # UNTESTED
         registration_ids = map(
             lambda device: device.token,
@@ -47,6 +44,9 @@ class GCMPushService(PushService):
                 device_list
             )
         )
+
+        if(len(registration_ids) < 1):
+            raise ValueError('device_list must contains at least GCM 1 Device')
 
         # UNTESTED
         body = {'registration_ids': registration_ids}

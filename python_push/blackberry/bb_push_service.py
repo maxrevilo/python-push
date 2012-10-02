@@ -44,9 +44,6 @@ class BBPushService(PushService):
             message: The Message to be sent to the device list.
             device_list: A DeviceList with at least 1 Blackberry Device.
         """
-        if(len(device_list) < 1):
-            raise ValueError('device_list must contains at least 1 Device')
-
         # UNTESTED
         registration_ids = reduce(
             lambda xml, device:
@@ -54,8 +51,11 @@ class BBPushService(PushService):
                     if device.type == BBPushService.type
                 else xml,
             device_list,
-            ""
+            ''
         )
+
+        if(registration_ids == ''):
+            raise ValueError('device_list must contains at least 1 Blackberry Device')
 
         # UNTESTED
         push_id = str(round(now_epoch() * random() + now_epoch()))
