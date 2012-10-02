@@ -48,3 +48,30 @@ class TestMessage(unittest.TestCase):
 
     def test_push_manager_send(self):
         pass
+        """
+        pm = PushManager([
+            GCMPushService(GCM_OPS),
+            BBPushService(BLACKBERRY_OPS)
+        ])
+
+        msg = Message()
+        device_list = [
+            Device(BBPushService.type, TOKEN['Blackberry']),
+            Device(GCMPushService.type, TOKEN['GCM'])
+        ]
+
+        status_dict = pm.send(msg, device_list)
+
+        self.assertTrue(
+            status_dict[BBPushService.type].code
+                in (1000, 1001, 2001, 2002, 2004, 4001, 21000),
+            '\nBlackberry Status Code %i:\n%s\n'
+                % (status_dict[BBPushService.type].code,
+                    status_dict[BBPushService.type].description)
+        )
+
+        self.assertTrue(
+            status_dict[GCMPushService.type].code in (200, 503),
+            '\nGCM Status Code %i:\n' % (status_dict[GCMPushService.type].code)
+        )
+        """

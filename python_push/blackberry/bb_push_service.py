@@ -7,7 +7,8 @@ import grequests
 
 from python_push.push_service import PushService
 from python_push.utils import now_epoch, date2utc
-from python_push.send_status import SendStatus
+from python_push.push_request import PushRequest
+from python_push.push_response import PushResponse
 
 
 BOUNDARY = "8d5588928a90afd3009d"
@@ -37,13 +38,11 @@ class BBPushService(PushService):
         else:
             self.settings = settings
 
-    def send(self, message, device_list, callback):
-        """ Sends a message to a Blackberry device list, when the Blackberry server response executes
-            the callback with the Blackberry response.
+    def send_request(self, message, device_list):
+        """ Return the request for Send a message to a Blackberry device list.
 
             message: The Message to be sent to the device list.
             device_list: A DeviceList with at least 1 Blackberry Device.
-            callback: the function to be executed when the Blackberry response is received.
         """
         if(len(device_list) < 1):
             raise ValueError('device_list must contains at least 1 Device')
@@ -89,7 +88,7 @@ class BBPushService(PushService):
             'Content-length': str(len(request_body.decode("utf-8"))),
         }
 
-        def response_cb(res):
+        def response_builder(res):
             code = res.status_code
             assert isinstance(code, int)
             if(code == 200):
@@ -97,21 +96,30 @@ class BBPushService(PushService):
                 #This is the status code sent by BlackBerry Server:
                 bb_code = int(re.search(r'code=\"(.+?)\"', res.text).groups()[0])
                 bb_desc = re.search(r'desc=\"(.+?)\"', res.text).groups()[0]
-                return callback(
-                    SendStatus(
+                return PushResponse(
+                        type=BBPushService.type,
                         code=bb_code,
                         description=bb_desc,
                         raw=res.text
                     )
-                )
             else:
                 raise Exception("Error connecting with Blackberry server")
 
         # UNTESTED
-        req = grequests.post(
-            'https://cp2974.pushapi.eval.blackberry.com:443/mss/PD_pushRequest',
-            data=request_body,
-            headers=headers,
-            hooks={'response': response_cb}
+        return PushRequest(
+            type=BBPushService.type,
+            request=grequests.post(
+                'https://cp2974.pushapi.eval.blackberry.com:443/mss/PD_pushRequest',
+                data=request_body,
+                headers=headers
+            ),
+            response_builder=response_builder
         )
-        req.send()
+
+    def send(self, message, device_list):
+        """ Sends a message to a Blackberry device list and returns the Response.
+
+            message: The Message to be sent to the device list.
+            device_list: A DeviceList with at least 1 Blackberry Device.
+        """
+        return self.send_request(message, device_list).send()
