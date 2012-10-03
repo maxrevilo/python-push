@@ -68,6 +68,7 @@ class GCMPushService(PushService):
             return PushResponse(
                     type=GCMPushService.type,
                     code=code,
+                    is_ok=code == 200,
                     success=res.json['success'] if code == 200 else None,
                     failure=res.json['failure'] if code == 200 else None,
                     raw=res.text

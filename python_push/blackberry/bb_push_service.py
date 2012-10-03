@@ -99,6 +99,7 @@ class BBPushService(PushService):
                 return PushResponse(
                         type=BBPushService.type,
                         code=bb_code,
+                        is_ok=bb_code in (1000, 1001),
                         description=bb_desc,
                         raw=res.text
                     )
