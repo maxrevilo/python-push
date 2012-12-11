@@ -1,48 +1,27 @@
 ===========
 Python Push Notification Manager
 ===========
+| Python Push is a Python server-side library for sending Push Notifications to multiple mobile platforms.
+| This library is still in its very early stages, for now it is only supported Ping Pushes, which means that no data is sent in the push, but the `Demo Application <https://github.com/maxrevilo/python-push-demo/>`_ shows a way to handle this using post syncronization wich is even better than send the info in the push.
 
-Current State
-=============
-
-| This library is still in its very early stages.
-| I expect to completely support the first two platforms for December.
-
-10/2/2012:
-_________
-| Now we support "ping" pushes to Android GCMs and Blackberries devices.
-| A "ping" push is a push which carries no content, for GCM this means use collapse_key.
-| These features are under development and not widely tested.
-| Theoretically is possible to send push with content.
-
-The demo application is already under development, this has:
-
-* A Django Server that manages the devices and sends the pushes.
-* The basic example of an Android App.
-* The basic example of a Blackberry App.
-
-As I said the demo application is under development so is not is not yet published, but when the basic examples are ready I will provide the link to the repo.
-
-
-Platforms:
+Supported Platforms:
 ==========
-At short term:
-
 1. Android GCM
 2. Blackberry Push Protocol.
+
+In development:
+_______________
 3. iOS APN
-
-At long term:
-
 4. Windows Phone 7
 5. Symbian
 6. Browsers (With sockets)
 7. Windows 8
 
-Usage (for now):
-================
+Usage:
+======
+For a full project with mobile apps see the `Demo Application <https://github.com/maxrevilo/python-push-demo/>`_.
 
-Send a ping Push::
+Sending a ping Push::
 
     from python_push.push_manager import PushManager
     from python_push.gcm.gcm_push_service import GCMPushService
@@ -63,9 +42,20 @@ Send a ping Push::
 
     status_dict = push_manager.send(msg, device_list)
 
-    bb_push_status = status_dict[BBPushService.type]
-    print 'Blackberry Status Code %i:\n%s\n'\
-        % (bb_push_status.code, bb_push_status.description)
+    for type, status in status_dict.iteritems():
+            print 'Service %s: Status %i, Content %s\n' % (type, status.code, status.raw)
 
-    gcm_push_status = status_dict[GCMPushService.type]
-    print 'GCM Status Code %i:\n' % (gcm_push_status.code)
+
+Updates:
+=========
+12/11/2012:
+_________
+| The demo proyect is ready and has its own repo: https://github.com/maxrevilo/python-push-demo
+| It features a Django Server using Python Push and four navite apps, two of Android and Two of Blackberry.
+
+10/2/2012:
+_________
+| Now we support "ping" pushes to Android GCMs and Blackberries devices.
+| A "ping" push is a push which carries no content, for GCM this means use collapse_key.
+| These features are under development and not widely tested.
+| Theoretically is possible to send push with content.
