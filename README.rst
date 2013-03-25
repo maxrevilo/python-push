@@ -21,7 +21,10 @@ Usage:
 ======
 For a full project with mobile apps see the `Demo Application <https://github.com/maxrevilo/python-push-demo/>`_.
 
-Sending a ping Push::
+You have to run "python setup.py install" or install `grequests <https://github.com/kennethreitz/grequests>`_ and its dependences.
+
+Sending a ping Push:
+-------------------
 
     from python_push.push_manager import PushManager
     from python_push.gcm.gcm_push_service import GCMPushService
@@ -45,6 +48,21 @@ Sending a ping Push::
     for type, status in status_dict.iteritems():
             print 'Service %s: Status %i, Content %s\n' % (type, status.code, status.raw)
 
+On Django:
+----------
+Add the following lines in the __main__ of your manage.py
+
+    from gevent import monkey
+    monkey.patch_all()
+
+Your main will look as follows:
+
+    if __name__ == '__main__':
+        # for python-push
+        from gevent import monkey
+        monkey.patch_all()
+
+        ...
 
 Updates:
 =========
