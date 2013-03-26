@@ -4,7 +4,7 @@ Python Push Notification Manager
 | Python Push is a Python server-side library for sending Push Notifications to multiple mobile platforms.
 | This library is still in its very early stages, for now it is only supported Ping Pushes, which means that no data is sent in the push, but the `Demo Application <https://github.com/maxrevilo/python-push-demo/>`_ shows a way to handle this using post syncronization wich is even better than send the info in the push.
 
-Supported Platforms:
+Supported Platforms
 ==========
 1. Android GCM
 2. Blackberry Push Protocol.
@@ -17,14 +17,17 @@ _______________
 6. Browsers (With sockets)
 7. Windows 8
 
-Usage:
+Usage
 ======
 For a full project with mobile apps see the `Demo Application <https://github.com/maxrevilo/python-push-demo/>`_.
 
-You have to run "python setup.py install" or install `grequests <https://github.com/kennethreitz/grequests>`_ and its dependences.
+You'll have to run "python setup.py install" or install `grequests <https://github.com/kennethreitz/grequests>`_ and its dependences.
 
+Raw Python:
+__________
 Sending a ping Push:
--------------------
+
+.. code-block:: python
 
     from python_push.push_manager import PushManager
     from python_push.gcm.gcm_push_service import GCMPushService
@@ -47,24 +50,33 @@ Sending a ping Push:
 
     for type, status in status_dict.iteritems():
             print 'Service %s: Status %i, Content %s\n' % (type, status.code, status.raw)
+..
 
-On Django:
-----------
-Add the following lines in the __main__ of your manage.py
+
+Django:
+__________
+Add the following lines in the ``__main__`` of your ``manage.py``
+
+.. code-block:: python
 
     from gevent import monkey
     monkey.patch_all()
 
+
 Your main will look as follows:
 
-    if __name__ == '__main__':
-        # for python-push
-        from gevent import monkey
-        monkey.patch_all()
+.. code-block:: python
 
-        ...
+        if __name__ == '__main__':
+            # for python-push
+            from gevent import monkey
+            monkey.patch_all()
 
-Updates:
+            ...
+
+
+
+Updates
 =========
 12/11/2012:
 _________
