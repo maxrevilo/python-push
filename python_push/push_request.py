@@ -34,9 +34,9 @@ class PushRequest:
             return response
 
         self._request = grequests.post(
-            request.url,
-            data=request.data,
-            headers=request.headers,
+            request['url'],
+            data=request['data'],
+            headers=request['headers'],
             hooks=dict(response=respone_handler)
         )
 
