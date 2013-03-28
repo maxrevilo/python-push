@@ -22,6 +22,8 @@ class PushRequest:
         self.type = type
         self.on_response = on_response
         self._response_builder = response_builder
+        #Default response:
+        self.push_response = PushResponse(type=self.type, code=0, is_ok=False, raw='Not sended')
 
         def respone_handler(response):
             self.push_response = self._response_builder(response)
