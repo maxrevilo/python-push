@@ -1,7 +1,6 @@
 from python_push.push_service import PushService
 from python_push.push_response import PushResponse
 from python_push.push_request import PushRequest
-import grequests
 import json
 
 
@@ -77,11 +76,11 @@ class GCMPushService(PushService):
         # UNTESTED
         return PushRequest(
             type=GCMPushService.type,
-            request=grequests.post(
-                'https://android.googleapis.com/gcm/send',
-                data=body_str,
-                headers=headers
-            ),
+            request={
+                'url': 'https://android.googleapis.com/gcm/send',
+                'data': body_str,
+                'headers': headers
+            },
             response_builder=response_builder
         )
 

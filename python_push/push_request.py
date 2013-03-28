@@ -1,4 +1,5 @@
 from python_push.push_response import PushResponse
+import grequests
 
 
 class PushRequest:
@@ -20,7 +21,6 @@ class PushRequest:
         """
         self.type = type
         self.on_response = on_response
-        self._request = request
         self._response_builder = response_builder
 
         def respone_handler(response):
@@ -33,7 +33,12 @@ class PushRequest:
 
             return response
 
-        self._request.hooks['response'] = respone_handler
+        self._request = grequests.post(
+            request.url,
+            data=request.data,
+            headers=request.headers,
+            hooks=dict(response=respone_handler)
+        )
 
     def send(self):
         """ Sends this PushRequest to the server and return the PushResponse """

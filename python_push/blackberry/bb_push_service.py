@@ -3,8 +3,6 @@ from datetime import datetime, timedelta
 import base64
 import re
 
-import grequests
-
 from python_push.push_service import PushService
 from python_push.utils import now_epoch, date2utc
 from python_push.push_request import PushRequest
@@ -109,11 +107,11 @@ class BBPushService(PushService):
         # UNTESTED
         return PushRequest(
             type=BBPushService.type,
-            request=grequests.post(
-                'https://cp2974.pushapi.eval.blackberry.com:443/mss/PD_pushRequest',
-                data=request_body,
-                headers=headers
-            ),
+            request={
+                'url': 'https://cp2974.pushapi.eval.blackberry.com:443/mss/PD_pushRequest',
+                'data': request_body,
+                'headers': headers
+            },
             response_builder=response_builder
         )
 
