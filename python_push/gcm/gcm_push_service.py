@@ -50,7 +50,7 @@ class GCMPushService(PushService):
         # UNTESTED
         body = {'registration_ids': registration_ids}
         # UNTESTED
-        if(message.payload != None):
+        if(message.payload is None):
             body['data'] = message.payload
         # UNTESTED
         body_str = json.dumps(body)
@@ -62,32 +62,36 @@ class GCMPushService(PushService):
         }
 
         def response_builder(res):
-            code = res.status_code
+            code = res.status
             assert isinstance(code, int)
+
+            try:
+                json_resp = json.loads(res.text)
+            except ValueError:
+                raise ValueError("Response from GCM Server is not JSON formated")
+
             return PushResponse(
-                    type=GCMPushService.type,
-                    code=code,
-                    is_ok=code == 200,
-                    success=res.json['success'] if code == 200 else None,
-                    failure=res.json['failure'] if code == 200 else None,
-                    raw=res.text
-                )
+                type=GCMPushService.type,
+                code=code,
+                is_ok=code == 200,
+                success=json_resp['success'] if code == 200 else None,
+                failure=json_resp['failure'] if code == 200 else None,
+                raw=res.text
+            )
 
         # UNTESTED
         return PushRequest(
             type=GCMPushService.type,
-            request={
-                'url': 'https://android.googleapis.com/gcm/send',
-                'data': body_str,
-                'headers': headers
-            },
+            url='https://android.googleapis.com/gcm/send',
+            headers=headers,
+            body=body_str,
             response_builder=response_builder
         )
 
-    def send(self, message, device_list):
-        """ Sends a message to a GCM device list and returns the Response.
+    # def send(self, message, device_list):
+    #     """ Sends a message to a GCM device list and returns the Response.
 
-            message: The Message to be sent to the device list.
-            device_list: A DeviceList with at least 1 GCM Device.
-        """
-        return self.send_request(message, device_list).send()
+    #         message: The Message to be sent to the device list.
+    #         device_list: A DeviceList with at least 1 GCM Device.
+    #     """
+    #     return self.send_request(message, device_list).send()

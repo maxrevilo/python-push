@@ -1,5 +1,4 @@
 from python_push.push_service import PushService
-import grequests
 
 
 class PushManager:
@@ -29,19 +28,16 @@ class PushManager:
         """
         status_dict = {}
         push_requests = []
-        python_requests = []
 
         for push_service in self._services:
             try:
-                pr = push_service.send_request(message, device_list)
-                push_requests.append(pr)
-                python_requests.append(pr._request)
+                req = push_service.send_request(message, device_list).send()
+                push_requests.append(req)
             except ValueError:
                 pass
 
-        grequests.map(python_requests)
-
-        for pr in push_requests:
-            status_dict[pr.type] = pr.push_response
+        for req in push_requests:
+            #req.push_response block until get the response
+            status_dict[req.type] = req.push_response
 
         return status_dict

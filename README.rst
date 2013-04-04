@@ -2,7 +2,8 @@
 Python Push Notification Manager
 ===========
 | Python Push is a Python server-side library for sending Push Notifications to multiple mobile platforms.
-| This library is still in its very early stages, for now it is only supported Ping Pushes, which means that no data is sent in the push, but the `Demo Application <https://github.com/maxrevilo/python-push-demo/>`_ shows a way to handle this using post syncronization wich is even better than send the info in the push.
+| This library is still in its **very early stages**, for now it is only supported Ping Pushes, which means that no data is sent in the push, but the `Demo Application <https://github.com/maxrevilo/python-push-demo/>`_ shows a way to handle this using post syncronization wich is even better than send the info in the push.
+| Again this library **is not yet ready for production projects**.
 
 Supported Platforms
 ==========
@@ -21,7 +22,7 @@ Usage
 ======
 For a full project with mobile apps see the `Demo Application <https://github.com/maxrevilo/python-push-demo/>`_.
 
-You'll have to run "python setup.py install" or install `grequests <https://github.com/kennethreitz/grequests>`_ and its dependences.
+You'll have to run "python setup.py install" or install `Python AsyncHTTP <https://github.com/ross/python-asynchttp>`_ and its dependences.
 
 Raw Python:
 __________
@@ -53,31 +54,12 @@ Sending a ping Push:
 ..
 
 
-Django:
-__________
-Add the following lines in the ``__main__`` of your ``manage.py``
-
-.. code-block:: python
-
-    from gevent import monkey
-    monkey.patch_all()
-
-
-Your main will look as follows:
-
-.. code-block:: python
-
-        if __name__ == '__main__':
-            # for python-push
-            from gevent import monkey
-            monkey.patch_all()
-
-            ...
-
-
-
 Updates
 =========
+4/4/2013:
+| Switched from GRequests to `Python AsyncHTTP <https://github.com/ross/python-asynchttp>`
+| GRequests is to hard to install on Mac, Windows and some Linux distros and has too many dependences, for that reason python-push now is using "python-asynchttp" to send asynchronous HTTP and HTTPS requests.
+
 12/11/2012:
 _________
 | The demo proyect is ready and has its own repo: https://github.com/maxrevilo/python-push-demo

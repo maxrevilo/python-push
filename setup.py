@@ -11,6 +11,6 @@ setup(
     description='Python server-side library for sending Push Notifications to multiple mobile platforms.',
     long_description=open('README.rst').read(),
     install_requires=[
-        "grequests",
+        "python-asynchttp",
     ],
 )

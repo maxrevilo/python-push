@@ -87,7 +87,7 @@ class BBPushService(PushService):
         }
 
         def response_builder(res):
-            code = res.status_code
+            code = res.status
             assert isinstance(code, int)
             if(code == 200):
                 #The easiest way is use regex due to Server non-standard responses
@@ -95,30 +95,28 @@ class BBPushService(PushService):
                 bb_code = int(re.search(r'code=\"(.+?)\"', res.text).groups()[0])
                 bb_desc = re.search(r'desc=\"(.+?)\"', res.text).groups()[0]
                 return PushResponse(
-                        type=BBPushService.type,
-                        code=bb_code,
-                        is_ok=bb_code in (1000, 1001),
-                        description=bb_desc,
-                        raw=res.text
-                    )
+                    type=BBPushService.type,
+                    code=bb_code,
+                    is_ok=bb_code in (1000, 1001),
+                    description=bb_desc,
+                    raw=res.text
+                )
             else:
                 raise Exception("Error connecting with Blackberry server")
 
         # UNTESTED
         return PushRequest(
             type=BBPushService.type,
-            request={
-                'url': 'https://cp2974.pushapi.eval.blackberry.com:443/mss/PD_pushRequest',
-                'data': request_body,
-                'headers': headers
-            },
+            url='https://cp2974.pushapi.eval.blackberry.com:443/mss/PD_pushRequest',
+            headers=headers,
+            body=request_body,
             response_builder=response_builder
         )
 
-    def send(self, message, device_list):
-        """ Sends a message to a Blackberry device list and returns the Response.
+    # def send(self, message, device_list):
+    #     """ Sends a message to a Blackberry device list and returns the Response.
 
-            message: The Message to be sent to the device list.
-            device_list: A DeviceList with at least 1 Blackberry Device.
-        """
-        return self.send_request(message, device_list).send()
+    #         message: The Message to be sent to the device list.
+    #         device_list: A DeviceList with at least 1 Blackberry Device.
+    #     """
+    #     return self.send_request(message, device_list).send().wait()

@@ -16,11 +16,11 @@ class PushService(object):
         """
         pass
 
-    @abstractmethod
-    def send(self, message, device_list):
-        """ Sends a message to a to a especific PushService device list and returns the Response.
+    # @abstractmethod
+    # def send(self, message, device_list):
+    #     """ Sends a message to a to a especific PushService device list and returns the Response.
 
-            message: The Message to be sent to the device list.
-            device_list: A DeviceList with at least oneDevice.
-        """
-        pass
+    #         message: The Message to be sent to the device list.
+    #         device_list: A DeviceList with at least oneDevice.
+    #     """
+    #     pass
