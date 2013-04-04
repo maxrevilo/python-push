@@ -56,8 +56,10 @@ Sending a ping Push:
 
 Updates
 =========
+
 4/4/2013:
-| Switched from GRequests to `Python AsyncHTTP <https://github.com/ross/python-asynchttp>`
+_________
+| Changed from GRequests to `Python AsyncHTTP <https://github.com/ross/python-asynchttp>`_
 | GRequests is to hard to install on Mac, Windows and some Linux distros and has too many dependences, for that reason python-push now is using "python-asynchttp" to send asynchronous HTTP and HTTPS requests.
 
 12/11/2012:
