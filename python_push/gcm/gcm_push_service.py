@@ -65,10 +65,11 @@ class GCMPushService(PushService):
             code = res.status
             assert isinstance(code, int)
 
-            try:
-                json_resp = json.loads(res.text)
-            except ValueError:
-                raise ValueError("Response from GCM Server is not JSON formated")
+            if code == 200:
+                try:
+                    json_resp = json.loads(res.text)
+                except ValueError:
+                    raise ValueError("Response from GCM Server is not JSON formated")
 
             return PushResponse(
                 type=GCMPushService.type,

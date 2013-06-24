@@ -37,7 +37,7 @@ class PushManager:
                 pass
 
         for req in push_requests:
-            #req.push_response block until get the response
+            #req.push_response blocks until get the response
             status_dict[req.type] = req.push_response
 
         return status_dict
