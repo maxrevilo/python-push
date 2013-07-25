@@ -50,7 +50,7 @@ class GCMPushService(PushService):
         # UNTESTED
         body = {'registration_ids': registration_ids}
         # UNTESTED
-        if(message.payload is None):
+        if(message.payload is not None):
             body['data'] = message.payload
         # UNTESTED
         body_str = json.dumps(body)
