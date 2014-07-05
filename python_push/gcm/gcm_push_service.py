@@ -26,7 +26,7 @@ class GCMPushService(PushService):
         if 'api_id' in settings and len(settings['api_id']) > 0:
             self.settings = settings
         else:
-            raise ValueError('api_id must well be defined on settings')
+            raise ValueError('api_id must be well defined on settings')
 
     def send_request(self, message, device_list):
         """ Return the request for Send a message to a GCM device list.

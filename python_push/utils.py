@@ -1,4 +1,5 @@
 from datetime import datetime
+import collections
 import time
 
 
@@ -14,3 +15,12 @@ def date2utc(date):
         "%Y-%m-%dT%H:%M:%SZ",
         time.gmtime(time.mktime(date.timetuple()))
     )
+
+
+def deep_update(origin, destiny):
+    for key, val in origin.iteritems():
+        if isinstance(val, collections.Mapping):
+            destiny[key] = deep_update(val, {})
+        else:
+            destiny[key] = origin[key]
+    return destiny
