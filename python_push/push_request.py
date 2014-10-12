@@ -13,8 +13,9 @@ class PushRequest:
 
     _response_promise = None
     _push_response = None
+    ssl_certificate_validation = True
 
-    def __init__(self, type, url, body, headers, response_builder, on_response=None):
+    def __init__(self, type, url, body, headers, response_builder, on_response=None, ssl_certificate_validation=True):
         """ Creates a PushRequest.
             type: The Push Service type of the request.
             url: is the URL push resource and can begin with either http or https.
@@ -30,6 +31,7 @@ class PushRequest:
         self.headers = headers
         self.on_response = on_response
         self.response_builder = response_builder
+        self.ssl_certificate_validation = ssl_certificate_validation
         #Default response:
         self._push_response = PushResponse(type=self.type, code=0, is_ok=False, raw='Not sended')
 
@@ -47,7 +49,8 @@ class PushRequest:
 
             return promise.response
 
-        self._response_promise, _ = Http().request(
+        http = Http(disable_ssl_certificate_validation=not self.ssl_certificate_validation)
+        self._response_promise, _ = http.request(
             uri=self.url,
             method="POST",
             body=self.body,
