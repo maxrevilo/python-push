@@ -78,6 +78,9 @@ class ParseAIService(PushService):
         if message.options is not None:
             deep_update(message.options, notification)
 
+        if message.payload is not None:
+            deep_update(message.payload, notification['payload'])
+
         headers = {
             'Content-Type': 'application/json',
             'X-Parse-Application-Id': self.settings['app_id'],
