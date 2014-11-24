@@ -42,7 +42,8 @@ class ParseAIService(PushService):
                 'badge': 1,
                 'sound': None,
                 'content-available': 0,
-                'category': None
+                'category': None,
+                'payload': {},
             }
         }
 
