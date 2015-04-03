@@ -40,7 +40,7 @@ class ParseAIService(PushService):
             'defaults': {
                 'alert': 'Alert',
                 'badge': 1,
-                'sound': None,
+                'sound': 'default',
                 'content-available': 0,
                 'category': None,
                 'payload': {},
